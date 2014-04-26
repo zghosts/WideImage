@@ -23,19 +23,28 @@
 
 namespace WideImage\Mapper;
 
+use WideImage\MapperInterface;
+
 /**
  * Mapper class for JPEG files
  * 
  * @package Internal/Mappers
  */
-class JPEG
+class JPEG implements MapperInterface
 {
 	public function load($uri)
 	{
 		return @imagecreatefromjpeg($uri);
 	}
-	
-	public function save($handle, $uri = null, $quality = 100)
+
+    /**
+     * @param resource $handle
+     * @param string   $uri
+     * @param int      $quality
+     *
+     * @return bool
+     */
+    public function save($handle, $uri = null, $quality = 100)
 	{
 		return imagejpeg($handle, $uri, $quality);
 	}

@@ -23,12 +23,14 @@
 
 namespace WideImage\Mapper;
 
+use WideImage\MapperInterface;
+
 /**
  * Mapper class for PNG files
  * 
  * @package Internal/Mappers
  */
-class PNG
+class PNG implements MapperInterface
 {
 	public function load($uri)
 	{

@@ -23,12 +23,14 @@
 
 namespace WideImage\Mapper;
 
+use WideImage\MapperInterface;
+
 /**
  * Mapper class for GIF files
  * 
  * @package Internal/Mappers
  */
-class GIF
+class GIF implements MapperInterface
 {
 	public function load($uri)
 	{

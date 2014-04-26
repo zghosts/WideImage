@@ -23,6 +23,7 @@
 
 namespace WideImage\Mapper;
 
+use WideImage\MapperInterface;
 use WideImage\vendor\de77;
 
 /**
@@ -30,7 +31,7 @@ use WideImage\vendor\de77;
  * 
  * @package Internal/Mappers
  */
-class BMP
+class BMP implements MapperInterface
 {
 	public function load($uri)
 	{

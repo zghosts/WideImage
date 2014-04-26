@@ -23,12 +23,14 @@
 
 namespace WideImage\Mapper;
 
+use WideImage\MapperInterface;
+
 /**
  * Mapper class for GD files
  * 
  * @package Internal/Mappers
  */
-class GD
+class GD implements MapperInterface
 {
 	public function load($uri)
 	{

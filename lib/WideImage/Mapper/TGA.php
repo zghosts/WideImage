@@ -23,6 +23,7 @@
 
 namespace WideImage\Mapper;
 
+use WideImage\MapperInterface;
 use WideImage\vendor\de77;
 use WideImage\Exception\Exception;
 
@@ -31,7 +32,7 @@ use WideImage\Exception\Exception;
  * 
  * @package Internal/Mappers
  */
-class TGA
+class TGA implements MapperInterface
 {
 	public function load($uri)
 	{
