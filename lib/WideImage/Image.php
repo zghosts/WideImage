@@ -117,34 +117,36 @@ abstract class Image
 	{
 		$this->handleReleased = true;
 	}
-	
-	/**
-	 * Saves an image to a file
-	 * 
-	 * The file type is recognized from the $uri. If you save to a GIF8, truecolor images
-	 * are automatically converted to palette.
-	 * 
-	 * This method supports additional parameters: quality (for jpeg images) and 
-	 * compression quality and filters (for png images). See http://www.php.net/imagejpeg and
-	 * http://www.php.net/imagepng for details.
-	 * 
-	 * Examples:
-	 * <code>
-	 * // save to a GIF
-	 * $image->saveToFile('image.gif');
-	 * 
-	 * // save to a PNG with compression=7 and no filters
-	 * $image->saveToFile('image.png', 7, PNG_NO_FILTER);
-	 * 
-	 * // save to a JPEG with quality=80
-	 * $image->saveToFile('image.jpg', 80);
-	 * 
-	 * // save to a JPEG with default quality=100
-	 * $image->saveToFile('image.jpg');
-	 * </code>
-	 * 
-	 * @param string $uri File location
-	 */
+
+    /**
+     * Saves an image to a file
+     *
+     * The file type is recognized from the $uri. If you save to a GIF8, truecolor images
+     * are automatically converted to palette.
+     *
+     * This method supports additional parameters: quality (for jpeg images) and
+     * compression quality and filters (for png images). See http://www.php.net/imagejpeg and
+     * http://www.php.net/imagepng for details.
+     *
+     * Examples:
+     * <code>
+     * // save to a GIF
+     * $image->saveToFile('image.gif');
+     *
+     * // save to a PNG with compression=7 and no filters
+     * $image->saveToFile('image.png', 7, PNG_NO_FILTER);
+     *
+     * // save to a JPEG with quality=80
+     * $image->saveToFile('image.jpg', 80);
+     *
+     * // save to a JPEG with default quality=100
+     * $image->saveToFile('image.jpg');
+     * </code>
+     *
+     * @param string $uri File location
+     *
+     * @throws Exception\UnknownErrorWhileMappingException
+     */
 	public function saveToFile($uri)
 	{
 		$mapper = MapperFactory::selectMapper($uri, null);
@@ -156,15 +158,17 @@ abstract class Image
 			throw new UnknownErrorWhileMappingException(get_class($mapper) . " returned an invalid result while saving to $uri");
 		}
 	}
-	
-	/**
-	 * Returns binary string with image data in format specified by $format
-	 * 
-	 * Additional parameters may be passed to the function. See \WideImage\Image::saveToFile() for more details.
-	 * 
-	 * @param string $format The format of the image
-	 * @return string The binary image data in specified format
-	 */
+
+    /**
+     * Returns binary string with image data in format specified by $format
+     *
+     * Additional parameters may be passed to the function. See \WideImage\Image::saveToFile() for more details.
+     *
+     * @param string $format The format of the image
+     *
+     * @throws Exception\UnknownErrorWhileMappingException
+     * @return string The binary image data in specified format
+     */
 	public function asString($format)
 	{
 		ob_start();
@@ -185,8 +189,8 @@ abstract class Image
 	/**
 	 * Output a header to browser.
 	 * 
-	 * @param $name Name of the header
-	 * @param $data Data
+	 * @param string $name Name of the header
+	 * @param string $data Data
 	 */
 	protected function writeHeader($name, $data)
 	{
@@ -264,12 +268,14 @@ abstract class Image
 	{
 		return imagecolortransparent($this->handle);
 	}
-	
-	/**
-	 * Sets the current transparent color index. Only makes sense for palette images (8-bit).
-	 * 
-	 * @param int $color Transparent color index
-	 */
+
+    /**
+     * Sets the current transparent color index. Only makes sense for palette images (8-bit).
+     *
+     * @param int $color Transparent color index
+     *
+     * @return int
+     */
 	public function setTransparentColor($color)
 	{
 		return imagecolortransparent($this->handle, $color);
@@ -341,14 +347,16 @@ abstract class Image
 	{
 		return imagecolorat($this->handle, $x, $y);
 	}
-	
-	/**
-	 * Set the color index $color to a pixel at $x, $y
-	 * 
-	 * @param int $x
-	 * @param int $y
-	 * @param int $color Color index
-	 */
+
+    /**
+     * Set the color index $color to a pixel at $x, $y
+     *
+     * @param int $x
+     * @param int $y
+     * @param int $color Color index
+     *
+     * @return bool
+     */
 	public function setColorAt($x, $y, $color)
 	{
 		return imagesetpixel($this->handle, $x, $y, $color);
@@ -420,14 +428,16 @@ abstract class Image
 			}
 		}
 	}
-	
-	/**
-	 * Fill the image at ($x, $y) with color index $color
-	 * 
-	 * @param int $x
-	 * @param int $y
-	 * @param int $color
-	 */
+
+    /**
+     * Fill the image at ($x, $y) with color index $color
+     *
+     * @param int $x
+     * @param int $y
+     * @param int $color
+     *
+     * @return bool
+     */
 	public function fill($x, $y, $color)
 	{
 		return imagefill($this->handle, $x, $y, $color);
@@ -437,7 +447,7 @@ abstract class Image
 	 * Used internally to create Operation objects
 	 *
 	 * @param string $name
-	 * @return object
+	 * @return \WideImage\OperationInterface
 	 */
 	protected function getOperation($name)
 	{
@@ -865,14 +875,16 @@ abstract class Image
 		$this->copyTo($dest, 0, 0);
 		return $dest;
 	}
-	
-	/**
-	 * Copies this image onto another image
-	 * 
-	 * @param \WideImage\Image $dest
-	 * @param int $left
-	 * @param int $top
-	 **/
+
+    /**
+     * Copies this image onto another image
+     *
+     * @param \WideImage\Image $dest
+     * @param int              $left
+     * @param int              $top
+     *
+     * @throws Exception\GDFunctionResultException
+     */
 	public function copyTo($dest, $left = 0, $top = 0)
 	{
 		if (!imagecopy($dest->getHandle(), $this->handle, $left, $top, 0, 0, $this->getWidth(), $this->getHeight())) {

@@ -31,13 +31,15 @@ use WideImage\Exception\GDFunctionResultException;
  */
 class PaletteImage extends Image
 {
-	/**
-	 * Create a palette image
-	 *
-	 * @param int $width
-	 * @param int $height
-	 * @return \WideImage\PaletteImage
-	 */
+    /**
+     * Create a palette image
+     *
+     * @param int $width
+     * @param int $height
+     *
+     * @throws Exception\InvalidImageDimensionException
+     * @return \WideImage\PaletteImage
+     */
 	public static function create($width, $height)
 	{
 		if ($width * $height <= 0 || $width < 0) {
@@ -69,13 +71,14 @@ class PaletteImage extends Image
 	{
 		return $this->copy();
 	}
-	
-	/**
-	 * Returns a copy of the image
-	 * 
-	 * @param $trueColor True if the new image should be truecolor
-	 * @return \WideImage\Image
-	 */
+
+    /**
+     * Returns a copy of the image
+     *
+     * @param bool $trueColor True if the new image should be truecolor
+     *
+     * @return \WideImage\Image
+     */
 	protected function copyAsNew($trueColor = false)
 	{
 		$width = $this->getWidth();

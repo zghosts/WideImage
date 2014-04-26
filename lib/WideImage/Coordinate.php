@@ -39,7 +39,8 @@ class Coordinate
 	/**
 	 * Parses a numeric or string representation of a corrdinate into a structure
 	 * 
-	 * @param string $coord Smart coordinate
+	 * @param string $c Smart coordinate
+     *
 	 * @return array Parsed smart coordinate
 	 */
 	public static function parse($c)
@@ -145,15 +146,17 @@ class Coordinate
 			}
 		}
 	}
-	
-	/**
-	 * Calculates and fixes a smart coordinate into a numeric value
-	 * 
-	 * @param mixed $value Smart coordinate, relative to $dim
-	 * @param int $dim Coordinate to which $value is relative
-	 * @param int $sec_dim Secondary dimension (for align)
-	 * @return int Calculated value
-	 */
+
+    /**
+     * Calculates and fixes a smart coordinate into a numeric value
+     *
+     * @param mixed $value   Smart coordinate, relative to $dim
+     * @param int   $dim     Coordinate to which $value is relative
+     * @param int   $sec_dim Secondary dimension (for align)
+     *
+     * @throws Exception\InvalidCoordinateException
+     * @return int Calculated value
+     */
 	public static function fix($value, $dim, $sec_dim = null)
 	{
 		$coord_tokens = self::parse($value);

@@ -167,12 +167,14 @@ class WideImage
 		return call_user_func(array(__CLASS__, 'loadFrom' . $predictedSourceType), $source);
 	}
 
-	/**
-	 * Create and load an image from a file or URL. The image format is auto-detected.
-	 * 
-	 * @param string $uri File or url
-	 * @return \WideImage\Image|\WideImage\PaletteImage|\WideImage\TrueColorImage
-	 */
+    /**
+     * Create and load an image from a file or URL. The image format is auto-detected.
+     *
+     * @param string $uri File or url
+     *
+     * @throws InvalidImageSourceException
+     * @return \WideImage\Image|\WideImage\PaletteImage|\WideImage\TrueColorImage
+     */
 	public static function loadFromFile($uri)
 	{
 		$data   = file_get_contents($uri);
@@ -212,12 +214,14 @@ class WideImage
 		return static::loadFromHandle($handle);
 	}
 
-	/**
-	 * Create and load an image from a string. Format is auto-detected.
-	 * 
-	 * @param string $string Binary data, i.e. from BLOB field in the database
-	 * @return \WideImage\Image|\WideImage\PaletteImage|\WideImage\TrueColorImage
-	 */
+    /**
+     * Create and load an image from a string. Format is auto-detected.
+     *
+     * @param string $string Binary data, i.e. from BLOB field in the database
+     *
+     * @throws InvalidImageSourceException
+     * @return \WideImage\Image|\WideImage\PaletteImage|\WideImage\TrueColorImage
+     */
 	public static function loadFromString($string)
 	{
 		if (strlen($string) < 128) {
@@ -245,25 +249,27 @@ class WideImage
 		
 		return static::loadFromHandle($handle);
 	}
-	
-	/**
-	 * Create and load an image from an image handle.
-	 * 
-	 * <b>Note:</b> the resulting image object takes ownership of the passed 
-	 * handle. When the newly-created image object is destroyed, the handle is 
-	 * destroyed too, so it's not a valid image handle anymore. In order to 
-	 * preserve the handle for use after object destruction, you have to call 
-	 * \WideImage\Image::releaseHandle() on the created image instance prior to its
-	 * destruction.
-	 * 
-	 * <code>
-	 * $handle = imagecreatefrompng('file.png');
-	 * $image = WideImage::loadFromHandle($handle);
-	 * </code>
-	 * 
-	 * @param resource $handle A valid GD image resource
-	 * @return \WideImage\Image|\WideImage\PaletteImage|\WideImage\TrueColorImage
-	 */
+
+    /**
+     * Create and load an image from an image handle.
+     *
+     * <b>Note:</b> the resulting image object takes ownership of the passed
+     * handle. When the newly-created image object is destroyed, the handle is
+     * destroyed too, so it's not a valid image handle anymore. In order to
+     * preserve the handle for use after object destruction, you have to call
+     * \WideImage\Image::releaseHandle() on the created image instance prior to its
+     * destruction.
+     *
+     * <code>
+     * $handle = imagecreatefrompng('file.png');
+     * $image = WideImage::loadFromHandle($handle);
+     * </code>
+     *
+     * @param resource $handle A valid GD image resource
+     *
+     * @throws InvalidImageSourceException
+     * @return \WideImage\Image|\WideImage\PaletteImage|\WideImage\TrueColorImage
+     */
 	public static function loadFromHandle($handle)
 	{
 		if (!static::isValidImageHandle($handle)) {
@@ -276,18 +282,20 @@ class WideImage
 		
 		return new PaletteImage($handle);
 	}
-	
-	/**
-	 * This method loads a file from the $_FILES array. The image format is auto-detected.
-	 * 
-	 * You only have to pass the field name as the parameter. For array fields, this function will
-	 * return an array of image objects, unless you specify the $index parameter, which will
-	 * load the desired image.
-	 * 
-	 * @param $field_name Name of the key in $_FILES array
-	 * @param int $index The index of the file to load (if the input field is an array)
-	 * @return \WideImage\Image The loaded image
-	 */
+
+    /**
+     * This method loads a file from the $_FILES array. The image format is auto-detected.
+     *
+     * You only have to pass the field name as the parameter. For array fields, this function will
+     * return an array of image objects, unless you specify the $index parameter, which will
+     * load the desired image.
+     *
+     * @param string $field_name Name of the key in $_FILES array
+     * @param int    $index      The index of the file to load (if the input field is an array)
+     *
+     * @throws InvalidImageSourceException
+     * @return \WideImage\Image The loaded image
+     */
 	public static function loadFromUpload($field_name, $index = null)
 	{
 		if (!array_key_exists($field_name, $_FILES)) {
@@ -351,12 +359,14 @@ class WideImage
 	{
 		return (is_resource($handle) && get_resource_type($handle) == 'gd');
 	}
-	
-	/**
-	 * Throws exception if the handle isn't a valid GD resource
-	 * 
-	 * @param mixed $handle The variable to check
-	 */
+
+    /**
+     * Throws exception if the handle isn't a valid GD resource
+     *
+     * @param mixed $handle The variable to check
+     *
+     * @throws InvalidImageHandleException
+     */
 	public static function assertValidImageHandle($handle)
 	{
 		if (!static::isValidImageHandle($handle)) {

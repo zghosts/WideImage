@@ -33,8 +33,14 @@ class PS
 	public $size;
 	public $color;
 	public $handle;
-	
-	public function __construct($file, $size, $color, $bgcolor = null)
+
+    /**
+     * @param string $file
+     * @param int    $size
+     * @param int    $color
+     * @param int    $bgcolor
+     */
+    public function __construct($file, $size, $color, $bgcolor = null)
 	{
 		$this->handle = imagepsloadfont($file);
 		$this->size   = $size;
@@ -46,8 +52,15 @@ class PS
 			$this->color = $color;
 		}
 	}
-	
-	public function writeText($image, $x, $y, $text, $angle = 0)
+
+    /**
+     * @param \WideImage\Image    $image
+     * @param int $x
+     * @param int $y
+     * @param string $text
+     * @param int $angle
+     */
+    public function writeText($image, $x, $y, $text, $angle = 0)
 	{
 		if ($image->isTrueColor()) {
 			$image->alphaBlending(true);

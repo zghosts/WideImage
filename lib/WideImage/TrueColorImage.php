@@ -42,14 +42,16 @@ class TrueColorImage extends Image
 		$this->alphaBlending(false);
 		$this->saveAlpha(true);
 	}
-	
-	/**
-	 * Factory method that creates a true-color image object
-	 *
-	 * @param int $width
-	 * @param int $height
-	 * @return \WideImage\TrueColorImage
-	 */
+
+    /**
+     * Factory method that creates a true-color image object
+     *
+     * @param int $width
+     * @param int $height
+     *
+     * @throws Exception\InvalidImageDimensionException
+     * @return \WideImage\TrueColorImage
+     */
 	public static function create($width, $height)
 	{
 		if ($width * $height <= 0 || $width < 0) {

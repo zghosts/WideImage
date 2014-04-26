@@ -60,21 +60,23 @@ class Canvas
 	{
 		$this->font = $font;
 	}
-	
-	/**
-	 * Creates and sets the current font
-	 * 
-	 * The supported font types are: TTF/OTF, PS, and GDF.
-	 * Font type is detected from the extension. If the $file parameter doesn't have an extension, TTF font is presumed.
-	 * 
-	 * Note: not all parameters are supported by all fonts.
-	 * 
-	 * @param string $file Font file name (string)
-	 * @param int $size Font size (supported for TTF/OTF and PS fonts, ignored for GDF)
-	 * @param int $color Text color
-	 * @param int $bgcolor Background color (supported only for PS font, ignored for TTF and PS)
-	 * @return mixed One of the \WideImage\Font\* objects
-	 */
+
+    /**
+     * Creates and sets the current font
+     *
+     * The supported font types are: TTF/OTF, PS, and GDF.
+     * Font type is detected from the extension. If the $file parameter doesn't have an extension, TTF font is presumed.
+     *
+     * Note: not all parameters are supported by all fonts.
+     *
+     * @param string $file    Font file name (string)
+     * @param int    $size    Font size (supported for TTF/OTF and PS fonts, ignored for GDF)
+     * @param int    $color   Text color
+     * @param int    $bgcolor Background color (supported only for PS font, ignored for TTF and PS)
+     *
+     * @throws Exception\InvalidFontFileException
+     * @return mixed One of the \WideImage\Font\* objects
+     */
 	public function useFont($file, $size = 12, $color = 0, $bgcolor = null)
 	{
 		$p = strrpos($file, '.');
@@ -98,27 +100,29 @@ class Canvas
 		$this->setFont($font);
 		return $font;
 	}
-	
-	/**
-	 * Write text on the image at specified position
-	 * 
-	 * You must set a font with a call to \WideImage\Canvas::setFont() prior to writing text to the image.
-	 * 
-	 * Smart coordinates are supported for $x and $y arguments, but currently only for TTF/OTF fonts.
-	 * 
-	 * Example:
-	 * <code>
-	 * $img = WideImage::load('pic.jpg');
-	 * $canvas = $img->getCanvas();
-	 * $canvas->useFont('Verdana.ttf', 16, $img->allocateColor(255, 0, 0));
-	 * $canvas->writeText('right', 'bottom', 'www.website.com');
-	 * </code>
-	 * 
-	 * @param int $x Left
-	 * @param int $y Top
-	 * @param string $text Text to write
-	 * @param int $angle The angle, defaults to 0
-	 */
+
+    /**
+     * Write text on the image at specified position
+     *
+     * You must set a font with a call to \WideImage\Canvas::setFont() prior to writing text to the image.
+     *
+     * Smart coordinates are supported for $x and $y arguments, but currently only for TTF/OTF fonts.
+     *
+     * Example:
+     * <code>
+     * $img = WideImage::load('pic.jpg');
+     * $canvas = $img->getCanvas();
+     * $canvas->useFont('Verdana.ttf', 16, $img->allocateColor(255, 0, 0));
+     * $canvas->writeText('right', 'bottom', 'www.website.com');
+     * </code>
+     *
+     * @param int    $x     Left
+     * @param int    $y     Top
+     * @param string $text  Text to write
+     * @param int    $angle The angle, defaults to 0
+     *
+     * @throws Exception\NoFontException
+     */
 	public function writeText($x, $y, $text, $angle = 0)
 	{
 		if ($this->font === null) {

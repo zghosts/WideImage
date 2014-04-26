@@ -44,14 +44,16 @@ abstract class MapperFactory
 		'image/gif'   => 'GIF', 
 		'image/png'   => 'PNG'
 	);
-	
-	/**
-	 * Returns a mapper, based on the $uri and $format
-	 * 
-	 * @param string $uri File URI
-	 * @param string $format File format (extension or mime-type) or null
-	 * @return mixed
-	 **/
+
+    /**
+     * Returns a mapper, based on the $uri and $format
+     *
+     * @param string $uri    File URI
+     * @param string $format File format (extension or mime-type) or null
+     *
+     * @throws Exception\UnsupportedFormatException
+     * @return mixed
+     */
 	public static function selectMapper($uri, $format = null)
 	{
 		$format = self::determineFormat($uri, $format);
@@ -106,8 +108,13 @@ abstract class MapperFactory
 		
 		return $format;
 	}
-	
-	public static function mimeType($format)
+
+    /**
+     * @param string $format
+     *
+     * @return string
+     */
+    public static function mimeType($format)
 	{
 		$format = strtoupper($format);
 		

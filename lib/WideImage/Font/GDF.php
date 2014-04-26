@@ -43,8 +43,14 @@ class GDF
 		
 		$this->color = $color;
 	}
-	
-	public function writeText($image, $x, $y, $text)
+
+    /**
+     * @param \WideImage\Image $image
+     * @param integer          $x
+     * @param integer          $y
+     * @param string           $text
+     */
+    public function writeText($image, $x, $y, $text)
 	{
 		imagestring($image->getHandle(), $this->font, $x, $y, $text, $this->color);
 	}
