@@ -23,23 +23,27 @@
 
 namespace WideImage\Operation;
 
+use WideImage\OperationInterface;
+
 /**
  * AutoCrop operation
  * 
  * @package Internal/Operations
  */
-class AutoCrop
+class AutoCrop implements OperationInterface
 {
-	/**
-	 * Executes the auto-crop operation on the $img
-	 * 
-	 * @param \WideImage\Image $img 
-	 * @param int $rgb_threshold The difference in RGB from $base_color
-	 * @param int $pixel_cutoff The number of pixels on each border that must be over $rgb_threshold
-	 * @param int $base_color The color that will get cropped
-	 * @return \WideImage\Image resulting auto-cropped image
-	 */
-	public function execute($img, $margin, $rgb_threshold, $pixel_cutoff, $base_color)
+    /**
+     * Executes the auto-crop operation on the $image
+     *
+     * @param \WideImage\Image $image
+     * @param int              $margin
+     * @param int              $rgb_threshold The difference in RGB from $base_color
+     * @param int              $pixel_cutoff  The number of pixels on each border that must be over $rgb_threshold
+     * @param int              $base_color    The color that will get cropped
+     *
+     * @return \WideImage\Image resulting auto-cropped image
+     */
+	public function execute($image, $margin = 0, $rgb_threshold = 0, $pixel_cutoff = 1, $base_color = null)
 	{
 		$margin = intval($margin);
 		
@@ -55,22 +59,22 @@ class AutoCrop
 		}
 		
 		if ($base_color === null) {
-			$rgb_base = $img->getRGBAt(0, 0);
+			$rgb_base = $image->getRGBAt(0, 0);
 		} else {
 			if ($base_color < 0) {
-				return $img->copy();
+				return $image->copy();
 			}
 			
-			$rgb_base = $img->getColorRGB($base_color);
+			$rgb_base = $image->getColorRGB($base_color);
 		}
 		
-		$cut_rect = array('left' => 0, 'top' => 0, 'right' => $img->getWidth() - 1, 'bottom' => $img->getHeight() - 1);
+		$cut_rect = array('left' => 0, 'top' => 0, 'right' => $image->getWidth() - 1, 'bottom' => $image->getHeight() - 1);
 		
 		for ($y = 0; $y <= $cut_rect['bottom']; $y++) {
 			$count = 0;
 			
 			for ($x = 0; $x <= $cut_rect['right']; $x++) {
-				$rgb  = $img->getRGBAt($x, $y);
+				$rgb  = $image->getRGBAt($x, $y);
 				$diff = abs($rgb['red'] - $rgb_base['red']) + abs($rgb['green'] - $rgb_base['green']) + abs($rgb['blue'] - $rgb_base['blue']);
 				
 				if ($diff > $rgb_threshold) {
@@ -84,11 +88,11 @@ class AutoCrop
 			}
 		}
 		
-		for ($y = $img->getHeight() - 1; $y >= $cut_rect['top']; $y--) {
+		for ($y = $image->getHeight() - 1; $y >= $cut_rect['top']; $y--) {
 			$count = 0;
 			
 			for ($x = 0; $x <= $cut_rect['right']; $x++) {
-				$rgb  = $img->getRGBAt($x, $y);
+				$rgb  = $image->getRGBAt($x, $y);
 				$diff = abs($rgb['red'] - $rgb_base['red']) + abs($rgb['green'] - $rgb_base['green']) + abs($rgb['blue'] - $rgb_base['blue']);
 				
 				if ($diff > $rgb_threshold) {
@@ -106,7 +110,7 @@ class AutoCrop
 			$count = 0;
 			
 			for ($y = $cut_rect['top']; $y <= $cut_rect['bottom']; $y++) {
-				$rgb  = $img->getRGBAt($x, $y);
+				$rgb  = $image->getRGBAt($x, $y);
 				$diff = abs($rgb['red'] - $rgb_base['red']) + abs($rgb['green'] - $rgb_base['green']) + abs($rgb['blue'] - $rgb_base['blue']);
 				
 				if ($diff > $rgb_threshold) {
@@ -124,7 +128,7 @@ class AutoCrop
 			$count = 0;
 			
 			for ($y = $cut_rect['top']; $y <= $cut_rect['bottom']; $y++) {
-				$rgb  = $img->getRGBAt($x, $y);
+				$rgb  = $image->getRGBAt($x, $y);
 				$diff = abs($rgb['red'] - $rgb_base['red']) + abs($rgb['green'] - $rgb_base['green']) + abs($rgb['blue'] - $rgb_base['blue']);
 				
 				if ($diff > $rgb_threshold) {
@@ -153,14 +157,14 @@ class AutoCrop
 			$cut_rect['top'] = 0;
 		}
 		
-		if ($cut_rect['right'] >= $img->getWidth()) {
-			$cut_rect['right'] = $img->getWidth() - 1;
+		if ($cut_rect['right'] >= $image->getWidth()) {
+			$cut_rect['right'] = $image->getWidth() - 1;
 		}
 		
-		if ($cut_rect['bottom'] >= $img->getHeight()) {
-			$cut_rect['bottom'] = $img->getHeight() - 1;
+		if ($cut_rect['bottom'] >= $image->getHeight()) {
+			$cut_rect['bottom'] = $image->getHeight() - 1;
 		}
 		
-		return $img->crop($cut_rect['left'], $cut_rect['top'], $cut_rect['right'] - $cut_rect['left'] + 1, $cut_rect['bottom'] - $cut_rect['top'] + 1);
+		return $image->crop($cut_rect['left'], $cut_rect['top'], $cut_rect['right'] - $cut_rect['left'] + 1, $cut_rect['bottom'] - $cut_rect['top'] + 1);
 	}
 }

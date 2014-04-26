@@ -23,6 +23,7 @@
 
 namespace WideImage\Operation;
 
+use WideImage\OperationInterface;
 use WideImage\PaletteImage;
 
 /**
@@ -32,16 +33,17 @@ use WideImage\PaletteImage;
  * 
  * @package Internal/Operations
  */
-class CopyChannelsPalette
+class CopyChannelsPalette implements OperationInterface
 {
 	/**
 	 * Returns an image with only specified channels copied
 	 *
-	 * @param \WideImage\PaletteImage $img
-	 * @param array $channels
-	 * @return \WideImage\PaletteImage
+     * @param \WideImage\PaletteImage $image
+     * @param array                   $channels
+     *
+     * @return \WideImage\PaletteImage
 	 */
-	public function execute($img, $channels)
+	public function execute($image, $channels = null)
 	{
 		$blank = array('red' => 0, 'green' => 0, 'blue' => 0);
 		
@@ -49,13 +51,13 @@ class CopyChannelsPalette
 			unset($channels['alpha']);
 		}
 		
-		$width  = $img->getWidth();
-		$height = $img->getHeight();
+		$width  = $image->getWidth();
+		$height = $image->getHeight();
 		$copy   = PaletteImage::create($width, $height);
 		
-		if ($img->isTransparent()) {
-			$otci = $img->getTransparentColor();
-			$TRGB = $img->getColorRGB($otci);
+		if ($image->isTransparent()) {
+			$otci = $image->getTransparentColor();
+			$TRGB = $image->getColorRGB($otci);
 			$tci  = $copy->allocateColor($TRGB);
 		} else {
 			$otci = null;
@@ -64,14 +66,14 @@ class CopyChannelsPalette
 		
 		for ($x = 0; $x < $width; $x++) {
 			for ($y = 0; $y < $height; $y++) {
-				$ci = $img->getColorAt($x, $y);
+				$ci = $image->getColorAt($x, $y);
 				
 				if ($ci === $otci) {
 					$copy->setColorAt($x, $y, $tci);
 					continue;
 				}
 				
-				$RGB = $img->getColorRGB($ci);
+				$RGB = $image->getColorRGB($ci);
 				
 				$newRGB = $blank;
 				
@@ -89,7 +91,7 @@ class CopyChannelsPalette
 			}
 		}
 		
-		if ($img->isTransparent()) {
+		if ($image->isTransparent()) {
 			$copy->setTransparentColor($tci);
 		}
 		

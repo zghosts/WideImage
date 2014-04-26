@@ -24,40 +24,41 @@
 namespace WideImage\Operation;
 
 use WideImage\Exception\GDFunctionResultException;
+use WideImage\OperationInterface;
 
 /**
  * AsNegative operation class
  * 
  * @package Internal/Operations
  */
-class AsNegative
+class AsNegative implements OperationInterface
 {
-	/**
-	 * Returns a greyscale copy of an image
-	 *
-	 * @param \WideImage\Image $image
-	 * @return \WideImage\Image
-	 */
+    /**
+     * Returns a greyscale copy of an image
+     *
+     * @param \WideImage\Image $image
+     *
+     * @throws \WideImage\Exception\GDFunctionResultException
+     * @return \WideImage\Image
+     */
 	public function execute($image)
 	{
 		$palette     = !$image->isTrueColor();
 		$transparent = $image->isTransparent();
 		
-		if ($palette && $transparent) {
-			$tcrgb = $image->getTransparentColorRGB();
-		}
-		
-		$new = $image->asTrueColor();
-		
-		if (!imagefilter($new->getHandle(), IMG_FILTER_NEGATE)) {
-			throw new GDFunctionResultException("imagefilter() returned false");
-		}
-		
-		if ($palette) {
-			$new = $new->asPalette();
-			
-			if ($transparent) {
-				$irgb = array('red' => 255 - $tcrgb['red'], 'green' => 255 - $tcrgb['green'], 'blue' => 255 - $tcrgb['blue'], 'alpha' => 127);
+        $new = $image->asTrueColor();
+
+        if (!imagefilter($new->getHandle(), IMG_FILTER_NEGATE)) {
+            throw new GDFunctionResultException("imagefilter() returned false");
+        }
+
+        if ($palette) {
+            $new = $new->asPalette();
+
+            if ($transparent) {
+                $tcrgb = $image->getTransparentColorRGB();
+
+                $irgb = array('red' => 255 - $tcrgb['red'], 'green' => 255 - $tcrgb['green'], 'blue' => 255 - $tcrgb['blue'], 'alpha' => 127);
 				
 				// needs imagecolorexactalpha instead of imagecolorexact, otherwise doesn't work on some transparent GIF images
 				$new_tci = imagecolorexactalpha($new->getHandle(), $irgb['red'], $irgb['green'], $irgb['blue'], 127);

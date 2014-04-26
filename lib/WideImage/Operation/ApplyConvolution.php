@@ -24,24 +24,27 @@
 namespace WideImage\Operation;
 
 use WideImage\Exception\GDFunctionResultException;
+use WideImage\OperationInterface;
 
 /**
  * ApplyConvolution operation class
  * 
  * @package Internal/Operations
  */
-class ApplyConvolution
+class ApplyConvolution implements OperationInterface
 {
-	/**
-	 * Executes imageconvolution() filter
-	 *
-	 * @param \WideImage\Image $image
-	 * @param array $matrix
-	 * @param numeric $div
-	 * @param numeric $offset
-	 * @return \WideImage\Image
-	 */
-	public function execute($image, $matrix, $div, $offset)
+    /**
+     * Executes imageconvolution() filter
+     *
+     * @param \WideImage\Image $image
+     * @param array            $matrix
+     * @param float            $div
+     * @param float            $offset
+     *
+     * @throws \WideImage\Exception\GDFunctionResultException
+     * @return \WideImage\Image
+     */
+	public function execute($image, array $matrix = array(), $div = null, $offset = null)
 	{
 		$new = $image->asTrueColor();
 		

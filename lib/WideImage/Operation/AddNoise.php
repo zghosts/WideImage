@@ -24,23 +24,26 @@
 
 namespace WideImage\Operation;
 
+use WideImage\OperationInterface;
+
 /**
  * Noise filter
  * 
  * @package Internal/Operations
  */
-class AddNoise
+class AddNoise implements OperationInterface
 {
-	/**
-	 * Returns image with noise added
-	 *
-	 * @param \WideImage\Image $image
-	 * @param float $amount
-	 * @param const $type
-	 * @param float $threshold
-	 * @return \WideImage\Image
-	 */
-	public function execute($image, $amount, $type) {
+    /**
+     * Returns image with noise added
+     *
+     * @param \WideImage\Image $image
+     * @param integer          $amount
+     * @param string           $type
+     *
+     * @internal param float $threshold
+     * @return \WideImage\Image
+     */
+	public function execute($image, $amount = 0, $type = null) {
 		switch ($type) {
 			case 'salt&pepper':
 				$fun = 'saltPepperNoise_fun'; 
@@ -60,8 +63,8 @@ class AddNoise
 	 * Returns image with every pixel changed by specififed function
 	 *
 	 * @param \WideImage\Image $image
-	 * @param str $function
-	 * @param int $value
+	 * @param string  $function
+	 * @param integer $value
 	 * @return \WideImage\Image
 	 */
 	public function filter($image, $function, $value)
@@ -84,32 +87,35 @@ class AddNoise
 	    
 	    return $image;
 	}
-	
-	/**
-	 * Adds color noise by altering given R,G,B values using specififed amount
-	 *
-	 * @param int $r
-	 * @param int $g
-	 * @param int $b
-	 * @param int $value		 
-	 * @return void
-	 */
+
+    /**
+     * Adds color noise by altering given R,G,B values using specififed amount
+     *
+     * @param int $r
+     * @param int $g
+     * @param int $b
+     * @param int $amount
+     *
+     * @internal param int $value
+     * @return void
+     */
 	public function colorNoise_fun(&$r, &$g, &$b, $amount)
 	{				
 		$r = static::byte($r + mt_rand(0, $amount) - ($amount >> 1) );
 		$g = static::byte($g + mt_rand(0, $amount) - ($amount >> 1) );
 		$b = static::byte($b + mt_rand(0, $amount) - ($amount >> 1) );
 	}
-	
-	/**
-	 * Adds mono noise by altering given R,G,B values using specififed amount
-	 *
-	 * @param int $r
-	 * @param int $g
-	 * @param int $b
-	 * @param int $value		 
-	 * @return void
-	 */
+
+    /**
+     * Adds mono noise by altering given R,G,B values using specififed amount
+     *
+     * @param int $r
+     * @param int $g
+     * @param int $b
+     * @param int $amount
+     *
+     * @return void
+     */
 	public function monoNoise_fun(&$r, &$g, &$b, $amount)
 	{				
 		$rand = mt_rand(0, $amount) - ($amount >> 1);
@@ -118,16 +124,17 @@ class AddNoise
 		$g = static::byte($g + $rand);
 		$b = static::byte($b + $rand);
 	}
-	
-	/**
-	 * Adds salt&pepper noise by altering given R,G,B values using specififed amount
-	 *
-	 * @param int $r
-	 * @param int $g
-	 * @param int $b
-	 * @param int $value		 
-	 * @return void
-	 */
+
+    /**
+     * Adds salt&pepper noise by altering given R,G,B values using specififed amount
+     *
+     * @param int $r
+     * @param int $g
+     * @param int $b
+     * @param int $amount
+     *
+     * @return void
+     */
 	public function saltPepperNoise_fun(&$r, &$g, &$b, $amount)
 	{
 		if (mt_rand(0, 255 - $amount) != 0) {
@@ -145,14 +152,15 @@ class AddNoise
 				break;
 		}
 	}
-	
-	/**
-	 * Returns value within (0,255)
-	 *
-	 * @param int $b		 
-	 * @return int
-	 */		
-	public function byte($b)
+
+    /**
+     * Returns value within (0,255)
+     *
+     * @param int $b
+     *
+     * @return int
+     */
+    public function byte($b)
 	{
 		if ($b > 255) {
 			return 255;

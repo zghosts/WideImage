@@ -24,23 +24,26 @@
 namespace WideImage\Operation;
 
 use WideImage\Exception\GDFunctionResultException;
+use WideImage\OperationInterface;
 
 /**
  * CorrectGamma operation class
  * 
  * @package Internal/Operations
  */
-class CorrectGamma
+class CorrectGamma implements OperationInterface
 {
-	/**
-	 * Executes imagegammacorrect()
-	 *
-	 * @param \WideImage\Image $image
-	 * @param numeric $input_gamma
-	 * @param numeric $output_gamma
-	 * @return \WideImage\TrueColorImage
-	 */
-	public function execute($image, $input_gamma, $output_gamma) {
+    /**
+     * Executes imagegammacorrect()
+     *
+     * @param \WideImage\Image $image
+     * @param float            $input_gamma
+     * @param float            $output_gamma
+     *
+     * @throws \WideImage\Exception\GDFunctionResultException
+     * @return \WideImage\TrueColorImage
+     */
+	public function execute($image, $input_gamma = 1.0, $output_gamma = 1.0) {
 		$new = $image->copy();
 		
 		if (!imagegammacorrect($new->getHandle(), $input_gamma, $output_gamma)) {

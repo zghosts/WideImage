@@ -24,41 +24,45 @@
 namespace WideImage\Operation;
 
 use WideImage\Coordinate;
-use WideImage\PaletteImage;
 use WideImage\Exception\Exception;
 use WideImage\Exception\GDFunctionResultException;
+use WideImage\OperationInterface;
+use WideImage\PaletteImage;
 
 /**
  * Crop operation class
  * 
  * @package Internal/Operations
  */
-class Crop
+class Crop implements OperationInterface
 {
-	/**
-	 * Returns a cropped image
-	 *
-	 * @param \WideImage\Image $img
-	 * @param smart_coordinate $left
-	 * @param smart_coordinate $top
-	 * @param smart_coordinate $width
-	 * @param smart_coordinate $height
-	 * @return \WideImage\Image
-	 */
-	public function execute($img, $left, $top, $width, $height)
+    /**
+     * Returns a cropped image
+     *
+     * @param \WideImage\Image $image
+     * @param integer          $left
+     * @param integer          $top
+     * @param integer          $width
+     * @param integer          $height
+     *
+     * @throws \WideImage\Exception\GDFunctionResultException
+     * @throws \WideImage\Exception\Exception
+     * @return \WideImage\Image
+     */
+	public function execute($image, $left = 0, $top = 0, $width = 0, $height = 0)
 	{
-		$width  = Coordinate::fix($width, $img->getWidth(), $width);
-		$height = Coordinate::fix($height, $img->getHeight(), $height);
-		$left   = Coordinate::fix($left, $img->getWidth(), $width);
-		$top    = Coordinate::fix($top, $img->getHeight(), $height);
+		$width  = Coordinate::fix($width, $image->getWidth(), $width);
+		$height = Coordinate::fix($height, $image->getHeight(), $height);
+		$left   = Coordinate::fix($left, $image->getWidth(), $width);
+		$top    = Coordinate::fix($top, $image->getHeight(), $height);
 		
 		if ($left < 0) {
 			$width = $left + $width;
 			$left  = 0;
 		}
 		
-		if ($width > $img->getWidth() - $left) {
-			$width = $img->getWidth() - $left;
+		if ($width > $image->getWidth() - $left) {
+			$width = $image->getWidth() - $left;
 		}
 		
 		if ($top < 0) {
@@ -66,27 +70,27 @@ class Crop
 			$top    = 0;
 		}
 		
-		if ($height > $img->getHeight() - $top) {
-			$height = $img->getHeight() - $top;
+		if ($height > $image->getHeight() - $top) {
+			$height = $image->getHeight() - $top;
 		}
 		
 		if ($width <= 0 || $height <= 0) {
 			throw new Exception("Can't crop outside of an image.");
 		}
 		
-		$new = $img->doCreate($width, $height);
+		$new = $image->doCreate($width, $height);
 		
-		if ($img->isTransparent() || $img instanceof PaletteImage) {
-			$new->copyTransparencyFrom($img);
+		if ($image->isTransparent() || $image instanceof PaletteImage) {
+			$new->copyTransparencyFrom($image);
 			
-			if (!imagecopyresized($new->getHandle(), $img->getHandle(), 0, 0, $left, $top, $width, $height, $width, $height)) {
+			if (!imagecopyresized($new->getHandle(), $image->getHandle(), 0, 0, $left, $top, $width, $height, $width, $height)) {
 				throw new GDFunctionResultException("imagecopyresized() returned false");
 			}
 		} else {
 			$new->alphaBlending(false);
 			$new->saveAlpha(true);
 			
-			if (!imagecopyresampled($new->getHandle(), $img->getHandle(), 0, 0, $left, $top, $width, $height, $width, $height)) {
+			if (!imagecopyresampled($new->getHandle(), $image->getHandle(), 0, 0, $left, $top, $width, $height, $width, $height)) {
 				throw new GDFunctionResultException("imagecopyresampled() returned false");
 			}
 		}

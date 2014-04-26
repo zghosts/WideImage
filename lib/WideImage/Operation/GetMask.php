@@ -23,6 +23,7 @@
 
 namespace WideImage\Operation;
 
+use WideImage\OperationInterface;
 use WideImage\TrueColorImage;
 
 /**
@@ -30,7 +31,7 @@ use WideImage\TrueColorImage;
  * 
  * @package Internal/Operations
  */
-class GetMask
+class GetMask implements OperationInterface
 {
 	/**
 	 * Returns a mask
@@ -47,7 +48,9 @@ class GetMask
 		$mask->setTransparentColor(-1);
 		$mask->alphaBlending(false);
 		$mask->saveAlpha(false);
-		
+
+        $greyscale = array();
+
 		for ($i = 0; $i <= 255; $i++) {
 			$greyscale[$i] = ImageColorAllocate($mask->getHandle(), $i, $i, $i);
 		}

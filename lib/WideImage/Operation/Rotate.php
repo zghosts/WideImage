@@ -23,6 +23,7 @@
 
 namespace WideImage\Operation;
 
+use WideImage\OperationInterface;
 use WideImage\TrueColorImage;
 
 /**
@@ -30,18 +31,19 @@ use WideImage\TrueColorImage;
  * 
  * @package Internal/Operations
  */
-class Rotate
+class Rotate implements OperationInterface
 {
-	/**
-	 * Returns rotated image
-	 *
-	 * @param \WideImage\Image $image
-	 * @param numeric $angle
-	 * @param int $bgColor
-	 * @param bool $ignoreTransparent
-	 * @return \WideImage\Image
-	 */
-	public function execute($image, $angle, $bgColor, $ignoreTransparent)
+    /**
+     * Returns rotated image
+     *
+     * @param \WideImage\Image $image
+     * @param int              $angle
+     * @param int              $bgColor
+     * @param bool             $ignoreTransparent
+     *
+     * @return \WideImage\Image
+     */
+	public function execute($image, $angle = 0, $bgColor = null, $ignoreTransparent = null)
 	{
 		$angle = -floatval($angle);
 		

@@ -29,24 +29,27 @@ use WideImage\TrueColorImage;
 use WideImage\Exception\GDFunctionResultException;
 use WideImage\Operation\Exception\InvalidFitMethodException;
 use WideImage\Operation\Exception\InvalidResizeDimensionException;
+use WideImage\OperationInterface;
 
 /**
  * Resize operation class
  * 
  * @package Internal/Operations
  */
-class Resize
+class Resize implements OperationInterface
 {
-	/**
-	 * Prepares and corrects smart coordinates
-	 *
-	 * @param \WideImage\Image $img
-	 * @param smart_coordinate $width
-	 * @param smart_coordinate $height
-	 * @param string $fit
-	 * @return array
-	 */
-	protected function prepareDimensions($img, $width, $height, $fit)
+    /**
+     * Prepares and corrects smart coordinates
+     *
+     * @param \WideImage\Image $img
+     * @param integer          $width
+     * @param integer          $height
+     * @param string           $fit
+     *
+     * @throws Exception\InvalidFitMethodException
+     * @return array
+     */
+	protected function prepareDimensions($img, $width = null, $height = null, $fit = null)
 	{
 		if ($width === null && $height === null) {
 			return array('width' => $img->getWidth(), 'height' => $img->getHeight());
@@ -104,42 +107,45 @@ class Resize
 		
 		return $dim;
 	}
-	
-	/**
-	 * Returns a resized image
-	 *
-	 * @param \WideImage\Image $img
-	 * @param smart_coordinate $width
-	 * @param smart_coordinate $height
-	 * @param string $fit
-	 * @param string $scale
-	 * @return \WideImage\Image
-	 */
-	public function execute($img, $width, $height, $fit, $scale)
+
+    /**
+     * Returns a resized image
+     *
+     * @param \WideImage\Image $image
+     * @param integer          $width
+     * @param integer          $height
+     * @param string           $fit
+     * @param string           $scale
+     *
+     * @throws Exception\InvalidResizeDimensionException
+     * @throws \WideImage\Exception\GDFunctionResultException
+     * @return \WideImage\Image
+     */
+	public function execute($image, $width = null, $height = null, $fit = null, $scale = null)
 	{
-		$dim = $this->prepareDimensions($img, $width, $height, $fit);
+		$dim = $this->prepareDimensions($image, $width, $height, $fit);
 		
-		if (($scale === 'down' && ($dim['width'] >= $img->getWidth() && $dim['height'] >= $img->getHeight())) ||
-			($scale === 'up' && ($dim['width'] <= $img->getWidth() && $dim['height'] <= $img->getHeight()))) {
-			$dim = array('width' => $img->getWidth(), 'height' => $img->getHeight());
+		if (($scale === 'down' && ($dim['width'] >= $image->getWidth() && $dim['height'] >= $image->getHeight())) ||
+			($scale === 'up' && ($dim['width'] <= $image->getWidth() && $dim['height'] <= $image->getHeight()))) {
+			$dim = array('width' => $image->getWidth(), 'height' => $image->getHeight());
 		}
 		
 		if ($dim['width'] <= 0 || $dim['height'] <= 0) {
 			throw new InvalidResizeDimensionException("Both dimensions must be larger than 0.");
 		}
 		
-		if ($img->isTransparent() || $img instanceof PaletteImage) {
+		if ($image->isTransparent() || $image instanceof PaletteImage) {
 			$new = PaletteImage::create($dim['width'], $dim['height']);
-			$new->copyTransparencyFrom($img);
+			$new->copyTransparencyFrom($image);
 			
 			if (!imagecopyresized(
 					$new->getHandle(), 
-					$img->getHandle(), 
+					$image->getHandle(),
 					0, 0, 0, 0, 
 					$new->getWidth(), 
 					$new->getHeight(), 
-					$img->getWidth(), 
-					$img->getHeight())) {
+					$image->getWidth(),
+					$image->getHeight())) {
 						throw new GDFunctionResultException("imagecopyresized() returned false");
 			}
 		} else {
@@ -149,12 +155,12 @@ class Resize
 			
 			if (!imagecopyresampled(
 					$new->getHandle(), 
-					$img->getHandle(), 
+					$image->getHandle(),
 					0, 0, 0, 0, 
 					$new->getWidth(), 
 					$new->getHeight(), 
-					$img->getWidth(), 
-					$img->getHeight())) {
+					$image->getWidth(),
+					$image->getHeight())) {
 						throw new GDFunctionResultException("imagecopyresampled() returned false");
 			}
 			

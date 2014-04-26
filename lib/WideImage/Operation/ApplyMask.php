@@ -24,24 +24,26 @@
 namespace WideImage\Operation;
 
 use WideImage\Coordinate;
+use WideImage\OperationInterface;
 
 /**
  * ApplyMask operation class
  * 
  * @package Internal/Operations
  */
-class ApplyMask
+class ApplyMask implements OperationInterface
 {
-	/**
-	 * Applies a mask on the copy of source image
-	 *
-	 * @param \WideImage\Image $image
-	 * @param \WideImage\Image $mask
-	 * @param smart_coordinate $left
-	 * @param smart_coordinate $top
-	 * @return \WideImage\Image
-	 */
-	public function execute($image, $mask, $left = 0, $top = 0)
+    /**
+     * Applies a mask on the copy of source image
+     *
+     * @param \WideImage\Image  $image
+     * @param \WideImage\Image  $mask
+     * @param integer           $left
+     * @param integer           $top
+     *
+     * @return \WideImage\Image
+     */
+	public function execute($image, $mask = null, $left = 0, $top = 0)
 	{
 		$left = Coordinate::fix($left, $image->getWidth(), $mask->getWidth());
 		$top  = Coordinate::fix($top, $image->getHeight(), $mask->getHeight());

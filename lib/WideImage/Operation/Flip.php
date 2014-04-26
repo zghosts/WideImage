@@ -24,20 +24,23 @@
 namespace WideImage\Operation;
 
 use WideImage\Exception\GDFunctionResultException;
+use WideImage\OperationInterface;
 
 /**
  * Flip operation class
  * 
  * @package Internal/Operations
  */
-class Flip
+class Flip implements OperationInterface
 {
-	/**
-	 * Returns a flipped image
-	 *
-	 * @param \WideImage\Image $image
-	 * @return \WideImage\Image
-	 */
+    /**
+     * Returns a flipped image
+     *
+     * @param \WideImage\Image $image
+     *
+     * @throws \WideImage\Exception\GDFunctionResultException
+     * @return \WideImage\Image
+     */
 	public function execute($image)
 	{
 		$new = $image->copy();

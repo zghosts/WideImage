@@ -24,20 +24,23 @@
 namespace WideImage\Operation;
 
 use WideImage\Exception\GDFunctionResultException;
+use WideImage\OperationInterface;
 
 /**
  * AsGrayscale operation class
  * 
  * @package Internal/Operations
  */
-class AsGrayscale
+class AsGrayscale implements OperationInterface
 {
-	/**
-	 * Returns a greyscale copy of an image
-	 *
-	 * @param \WideImage\Image $image
-	 * @return \WideImage\Image
-	 */
+    /**
+     * Returns a greyscale copy of an image
+     *
+     * @param \WideImage\Image $image
+     *
+     * @throws \WideImage\Exception\GDFunctionResultException
+     * @return \WideImage\Image
+     */
 	public function execute($image)
 	{
 		$new = $image->asTrueColor();

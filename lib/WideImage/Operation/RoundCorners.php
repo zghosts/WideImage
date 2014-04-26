@@ -23,6 +23,7 @@
 
 namespace WideImage\Operation;
 
+use WideImage\OperationInterface;
 use WideImage\WideImage;
 
 /**
@@ -30,16 +31,18 @@ use WideImage\WideImage;
  * 
  * @package Internal/Operations
  */
-class RoundCorners
+class RoundCorners implements OperationInterface
 {
-	/**
-	 * @param \WideImage\Image $image
-	 * @param int $radius
-	 * @param int $color
-	 * @param int $smoothness
-	 * @return \WideImage\Image
-	 */
-	public function execute($image, $radius, $color, $smoothness, $corners)
+    /**
+     * @param \WideImage\Image $image
+     * @param int              $radius
+     * @param int              $color
+     * @param int              $smoothness
+     * @param int              $corners
+     *
+     * @return \WideImage\Image
+     */
+	public function execute($image, $radius = 0, $color = null, $smoothness = 1, $corners = null)
 	{
 		if ($smoothness < 1) {
 			$sample_ratio = 1;

@@ -24,13 +24,14 @@
 namespace WideImage\Operation;
 
 use WideImage\Exception\GDFunctionResultException;
+use WideImage\OperationInterface;
 
 /**
  * ApplyFilter operation class
  * 
  * @package Internal/Operations
  */
-class ApplyFilter
+class ApplyFilter implements OperationInterface
 {
 	/**
 	 * A list of filters that only accept one arguments for imagefilter()
@@ -38,18 +39,21 @@ class ApplyFilter
 	 * @var array
 	 */
 	protected static $one_arg_filters = array(IMG_FILTER_SMOOTH, IMG_FILTER_CONTRAST, IMG_FILTER_BRIGHTNESS);
-	
-	/**
-	 * Executes imagefilter
-	 *
-	 * @param \WideImage\Image $image
-	 * @param int $filter 
-	 * @param numeric $arg1
-	 * @param numeric $arg2
-	 * @param numeric $arg3
-	 * @return \WideImage\TrueColorImage
-	 */
-	public function execute($image, $filter, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null)
+
+    /**
+     * Executes imagefilter
+     *
+     * @param \WideImage\Image $image
+     * @param integer          $filter
+     * @param integer          $arg1
+     * @param integer          $arg2
+     * @param integer          $arg3
+     * @param integer          $arg4
+     *
+     * @throws \WideImage\Exception\GDFunctionResultException
+     * @return \WideImage\TrueColorImage
+     */
+	public function execute($image, $filter = null, $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null)
 	{
 		$new = $image->asTrueColor();
 		

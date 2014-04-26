@@ -23,6 +23,8 @@
 
 namespace WideImage\Operation;
 
+use WideImage\OperationInterface;
+
 /**
  * Unsharp filter
  * 
@@ -32,18 +34,19 @@ namespace WideImage\Operation;
  * 
  * @package Internal/Operations
  */
-class Unsharp
+class Unsharp implements OperationInterface
 {
-	/**
-	 * Returns sharpened image
-	 *
-	 * @param \WideImage\Image $image
-	 * @param float $amount
-	 * @param int $radius
-	 * @param float $threshold
-	 * @return \WideImage\Image
-	 */
-	public function execute($image, $amount, $radius, $threshold)
+    /**
+     * Returns sharpened image
+     *
+     * @param \WideImage\Image $image
+     * @param float            $amount
+     * @param int              $radius
+     * @param float|int        $threshold
+     *
+     * @return \WideImage\Image
+     */
+	public function execute($image, $amount = 0.0, $radius = 0, $threshold = 0)
 	{
 		// Attempt to calibrate the parameters to Photoshop:
 		if ($amount > 500) {

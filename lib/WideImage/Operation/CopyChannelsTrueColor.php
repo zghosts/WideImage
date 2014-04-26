@@ -23,6 +23,7 @@
 
 namespace WideImage\Operation;
 
+use WideImage\OperationInterface;
 use WideImage\TrueColorImage;
 
 /**
@@ -32,26 +33,28 @@ use WideImage\TrueColorImage;
  * 
  * @package Internal/Operations
  */
-class CopyChannelsTrueColor {
-	/**
-	 * Returns an image with only specified channels copied
-	 * 
-	 * @param \WideImage\Image $img
-	 * @param array $channels
-	 * @return \WideImage\Image
-	 */
-	public function execute($img, $channels)
+class CopyChannelsTrueColor implements OperationInterface
+{
+    /**
+     * Returns an image with only specified channels copied
+     *
+     * @param \WideImage\Image $image
+     * @param array            $channels
+     *
+     * @return \WideImage\Image
+     */
+	public function execute($image, $channels = null)
 	{
 		$blank = array('red' => 0, 'green' => 0, 'blue' => 0, 'alpha' => 0);
 		
-		$width  = $img->getWidth();
-		$height = $img->getHeight();
+		$width  = $image->getWidth();
+		$height = $image->getHeight();
 		$copy   = TrueColorImage::create($width, $height);
 		
 		if (count($channels) > 0) {
 			for ($x = 0; $x < $width; $x++) {
 				for ($y = 0; $y < $height; $y++) {
-					$RGBA    = $img->getRGBAt($x, $y);
+					$RGBA    = $image->getRGBAt($x, $y);
 					$newRGBA = $blank;
 					
 					foreach ($channels as $channel) {

@@ -25,30 +25,33 @@ namespace WIdeImage\Operation;
 
 use WideImage\Coordinate;
 use WideImage\Exception\GDFunctionResultException;
+use WideImage\OperationInterface;
 
 /**
  * Merge operation class
  * 
  * @package Internal/Operations
  */
-class Merge
+class Merge implements OperationInterface
 {
-	/**
-	 * Returns a merged image
-	 *
-	 * @param \WideImage\Image $base
-	 * @param \WideImage\Image $overlay
-	 * @param smart_coordinate $left
-	 * @param smart_coordinate $top
-	 * @param numeric $pct
-	 * @return \WideImage\Image
-	 */
-	public function execute($base, $overlay, $left, $top, $pct)
+    /**
+     * Returns a merged image
+     *
+     * @param \WideImage\Image $image
+     * @param \WideImage\Image $overlay
+     * @param int              $left
+     * @param int              $top
+     * @param int              $pct
+     *
+     * @throws \WideImage\Exception\GDFunctionResultException
+     * @return \WideImage\Image
+     */
+	public function execute($image, $overlay = null, $left = 0, $top = 0, $pct = 0)
 	{
-		$x = Coordinate::fix($left, $base->getWidth(), $overlay->getWidth());
-		$y = Coordinate::fix($top, $base->getHeight(), $overlay->getHeight());
+		$x = Coordinate::fix($left, $image->getWidth(), $overlay->getWidth());
+		$y = Coordinate::fix($top, $image->getHeight(), $overlay->getHeight());
 		
-		$result = $base->asTrueColor();
+		$result = $image->asTrueColor();
 		$result->alphaBlending(true);
 		$result->saveAlpha(true);
 		

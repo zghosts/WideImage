@@ -34,8 +34,15 @@ use WideImage\Exception\UnknownImageOperationException;
 class OperationFactory
 {
 	protected static $cache = array();
-	
-	public static function get($operationName)
+
+    /**
+     * @param $operationName
+     *
+     * @throws Exception\UnknownImageOperationException
+     *
+     * @return OperationInterface
+     */
+    public static function get($operationName)
 	{
 		$lcname = strtolower($operationName);
 		

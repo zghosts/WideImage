@@ -25,30 +25,32 @@ namespace WideImage\Operation;
 
 use WideImage\WideImage;
 use WideImage\Coordinate;
+use WideImage\OperationInterface;
 
 /**
  * ResizeCanvas operation class
  * 
  * @package Internal/Operations
  */
-class ResizeCanvas
+class ResizeCanvas implements OperationInterface
 {
 	/**
 	 * Returns an image with a resized canvas
 	 * 
 	 * The image is filled with $color. Use $scale to determine, when to resize.
-	 *
-	 * @param \WideImage\Image $img
-	 * @param smart_coordinate $width
-	 * @param smart_coordinate $height
-	 * @param smart_coordinate $left
-	 * @param smart_coordinate $top
-	 * @param int $color
-	 * @param string $scale 'up', 'down', 'any'
-	 * @param boolean $merge
-	 * @return \WideImage\Image
+     *
+     * @param \WideImage\Image $img
+     * @param int              $width
+     * @param int              $height
+     * @param int              $left
+     * @param int              $top
+     * @param int              $color
+     * @param string           $scale 'up', 'down', 'any'
+     * @param boolean          $merge
+     *
+     * @return \WideImage\Image
 	 */
-	public function execute($img, $width, $height, $left, $top, $color, $scale, $merge)
+	public function execute($img, $width = 0, $height = 0, $left = 0, $top = 0, $color = 0 , $scale = 'any', $merge = null)
 	{
 		$new_width  = Coordinate::fix($width, $img->getWidth());
 		$new_height = Coordinate::fix($height, $img->getHeight());
