@@ -204,7 +204,7 @@ class WideImageTest extends WideImage_TestCase
 	}
 	
 	/**
-	 * @expectedException WideImage\Exception\InvalidImageSourceException
+	 * @expectedException \WideImage\Exception\InvalidImageSourceException
 	 */
 	public function testLoadFromStringEmpty()
 	{
@@ -265,7 +265,7 @@ class WideImageTest extends WideImage_TestCase
 	}
 	
 	/**
-	 * @expectedException WideImage\Exception\InvalidImageSourceException
+	 * @expectedException \WideImage\Exception\InvalidImageSourceException
 	 */
 	public function testInvalidImageFile()
 	{
@@ -273,7 +273,7 @@ class WideImageTest extends WideImage_TestCase
 	}
 	
 	/**
-	 * @expectedException WideImage\Exception\InvalidImageSourceException
+	 * @expectedException \WideImage\Exception\InvalidImageSourceException
 	 */
 	public function testEmptyString()
 	{
@@ -281,7 +281,7 @@ class WideImageTest extends WideImage_TestCase
 	}
 	
 	/**
-	 * @expectedException WideImage\Exception\InvalidImageSourceException
+	 * @expectedException \WideImage\Exception\InvalidImageSourceException
 	 */
 	public function testInvalidImageStringData()
 	{
@@ -289,7 +289,7 @@ class WideImageTest extends WideImage_TestCase
 	}
 	
 	/**
-	 * @expectedException WideImage\Exception\InvalidImageSourceException
+	 * @expectedException \WideImage\Exception\InvalidImageSourceException
 	 */
 	public function testInvalidImageHandle()
 	{
@@ -297,7 +297,7 @@ class WideImageTest extends WideImage_TestCase
 	}
 	
 	/**
-	 * @expectedException WideImage\Exception\InvalidImageSourceException
+	 * @expectedException \WideImage\Exception\InvalidImageSourceException
 	 */
 	public function testInvalidImageUploadField()
 	{

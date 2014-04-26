@@ -32,7 +32,7 @@ use Test\WideImage_TestCase;
 class BMPTest extends WideImage_TestCase
 {
 	/**
-	 * @var WideImage_Mapper_BMP
+	 * @var \WideImage\Mapper\BMP
 	 */
 	protected $mapper;
 	
