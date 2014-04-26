@@ -42,17 +42,17 @@ class TTF
 		$this->size  = $size;
 		$this->color = $color;
 	}
-	
-	/**
-	 * Writes text onto an image
-	 * 
-	 * @param \WideImage\Image $image
-	 * @param mixed $x smart coordinate
-	 * @param mixed $y smart coordinate
-	 * @param string $text
-	 * @param int $angle Angle in degrees clockwise
-	 */
-	public function writeText($image, $x, $y, $text, $angle = 0)
+
+    /**
+     * Writes text onto an image
+     *
+     * @param \WideImage\Image $image
+     * @param mixed            $x     smart coordinate
+     * @param mixed            $y     smart coordinate
+     * @param string           $text
+     * @param int              $angle Angle in degrees clockwise
+     */
+    public function writeText($image, $x, $y, $text, $angle = 0)
 	{
 		if ($image->isTrueColor()) {
 			$image->alphaBlending(true);
