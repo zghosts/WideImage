@@ -839,7 +839,7 @@ abstract class Image
 	 * Used internally to execute operations
 	 *
 	 * @param string $name
-	 * @param array $args
+	 * @param array  $args
 	 * @return \WideImage\Image
 	 */
 	public function __call($name, $args)
