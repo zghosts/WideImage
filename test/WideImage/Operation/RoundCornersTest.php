@@ -43,8 +43,11 @@ class RoundCornersTest extends WideImage_TestCase
 		$this->assertRGBAt($res, 95, 95, array('red' => 255, 'green' => 255, 'blue' => 255, 'alpha' => 0));
 		$this->assertRGBAt($res, 5, 95, array('red' => 255, 'green' => 255, 'blue' => 255, 'alpha' => 0));
 	}
-	
-	public function testTransparentCorner()
+
+    /**
+     * @medium
+     */
+    public function testTransparentCorner()
 	{
 		$img = WideImage::load(IMG_PATH . '100x100-blue-alpha.png');
 		$res = $img->roundCorners(30, null, WideImage::SIDE_ALL);

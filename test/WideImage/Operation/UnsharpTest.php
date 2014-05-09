@@ -31,7 +31,10 @@ use Test\WideImage_TestCase;
  */
 class UnsharpTest extends WideImage_TestCase
 {
-	public function test()
+    /**
+     * @medium
+     */
+    public function test()
 	{
 		$img    = WideImage::load(IMG_PATH . '100x100-color-hole.gif');
 		$result = $img->unsharp(10, 5, 1);

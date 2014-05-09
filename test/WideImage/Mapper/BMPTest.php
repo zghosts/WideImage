@@ -45,8 +45,11 @@ class BMPTest extends WideImage_TestCase
 	{
 		$this->mapper = null;
 	}
-	
-	public function testLoad()
+
+    /**
+     * @medium
+     */
+    public function testLoad()
 	{
 		$handle = $this->mapper->load(IMG_PATH . 'fgnl.bmp');
 		$this->assertTrue(is_resource($handle));
@@ -54,8 +57,11 @@ class BMPTest extends WideImage_TestCase
 		$this->assertEquals(287, imagesy($handle));
 		imagedestroy($handle);
 	}
-	
-	public function testSaveToString()
+
+    /**
+     * @large
+     */
+    public function testSaveToString()
 	{
 		$handle = de77\BMP::imagecreatefrombmp(IMG_PATH . 'fgnl.bmp');
 		ob_start();
@@ -69,7 +75,11 @@ class BMPTest extends WideImage_TestCase
 		$this->assertTrue(WideImage::isValidImageHandle($handle));
 		imagedestroy($handle);
 	}
-	
+
+
+    /**
+     * @large
+     */
 	public function testSaveToFile()
 	{
 		$handle = imagecreatefromgif(IMG_PATH . '100x100-color-hole.gif');

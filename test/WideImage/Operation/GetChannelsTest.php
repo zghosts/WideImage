@@ -31,7 +31,10 @@ use Test\WideImage_TestCase;
  */
 class GetChannelsTest extends WideImage_TestCase
 {
-	public function testCopyChannel8bit()
+    /**
+     * @medium
+     */
+    public function testCopyChannel8bit()
 	{
 		$img = WideImage::load(IMG_PATH . '100x100-color-hole.gif');
 		
@@ -71,8 +74,11 @@ class GetChannelsTest extends WideImage_TestCase
 		$this->assertRGBEqual($copy->getRGBAt(15, 85), 0, 0, 0);
 		$this->assertEquals($copy->getTransparentColor(), $copy->getColorAt(50, 50));
 	}
-	
-	public function testCopySingleChannel()
+
+    /**
+     * @medium
+     */
+    public function testCopySingleChannel()
 	{
 		$img = WideImage::load(IMG_PATH . '100x100-rgbyg.png');
 		
@@ -117,8 +123,11 @@ class GetChannelsTest extends WideImage_TestCase
 		$this->assertRGBNear($copy->getRGBAt(25, 75), 0, 0, 0, 127);
 		*/
 	}
-	
-	public function testCopyCombinedChannels()
+
+    /**
+     * @medium
+     */
+    public function testCopyCombinedChannels()
 	{
 		$img = WideImage::load(IMG_PATH . '100x100-blue-alpha.png');
 		$copy = $img->getChannels('blue', 'alpha');

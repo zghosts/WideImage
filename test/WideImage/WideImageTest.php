@@ -42,6 +42,10 @@ class WideImageTest extends WideImage_TestCase
 	{
 		$this->_FILES = $_FILES;
 		$_FILES = array();
+
+        if (!file_exists(IMG_PATH . "temp")) {
+            mkdir(IMG_PATH . "temp");
+        }
 	}
 	
 	public function teardown()
@@ -121,8 +125,11 @@ class WideImageTest extends WideImage_TestCase
 		$img = WideImage::loadFromUpload('testupl');
 		$this->assertValidImage($img);
 	}
-	
-	public function testLoadFromMultipleUploads()
+
+    /**
+     * @medium
+     */
+    public function testLoadFromMultipleUploads()
 	{
 		copy(IMG_PATH . '100x100-rainbow.png', IMG_PATH . 'temp' . DIRECTORY_SEPARATOR . 'upltmpimg1');
 		copy(IMG_PATH . 'splat.tga', IMG_PATH . 'temp' . DIRECTORY_SEPARATOR . 'upltmpimg2');
@@ -193,8 +200,11 @@ class WideImageTest extends WideImage_TestCase
 		$img = WideImage::load(IMG_PATH . 'actually-a-png.jpg');
 		$this->assertValidImage($img);
 	}
-	
-	public function testLoadFromFileWithInvalidExtensionWithCustomMapper()
+
+    /**
+     * @medium
+     */
+    public function testLoadFromFileWithInvalidExtensionWithCustomMapper()
 	{
 		if (PHP_OS == 'WINNT')
 			$this->markTestSkipped("For some reason, this test kills PHP my 32-bit Vista + PHP 5.3.1.");
@@ -210,8 +220,11 @@ class WideImageTest extends WideImage_TestCase
 	{
 		WideImage::loadFromString('');
 	}
-	
-	public function testLoadBMPMagicalFromUpload()
+
+    /**
+     * @medium
+     */
+    public function testLoadBMPMagicalFromUpload()
 	{
 		copy(IMG_PATH . 'fgnl.bmp', IMG_PATH . 'temp' . DIRECTORY_SEPARATOR . 'upltmpimg');
 		$_FILES = array(

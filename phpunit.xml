@@ -5,6 +5,9 @@
          backupGlobals="false"
          backupStaticAttributes="false"
          strict="true"
+         timeoutForSmallTests="1"
+         timeoutForMediumTests="5"
+         timeoutForLargeTests="10"
          verbose="true">
   <testsuites>
     <testsuite name="WideImage Tests">

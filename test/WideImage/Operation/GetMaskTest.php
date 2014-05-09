@@ -30,7 +30,10 @@ use Test\WideImage_TestCase;
  */
 class GetMaskTest extends WideImage_TestCase
 {
-	public function testGetMaskTransparentGif()
+    /**
+     * @medium
+     */
+    public function testGetMaskTransparentGif()
 	{
 		$img = WideImage::load(IMG_PATH . '100x100-color-hole.gif');
 		
@@ -45,8 +48,11 @@ class GetMaskTest extends WideImage_TestCase
 		$this->assertRGBNear($mask->getRGBAt(90, 90), 255, 255, 255);
 		$this->assertRGBNear($mask->getRGBAt(50, 50), 0, 0, 0);
 	}
-	
-	public function testGetMaskPNGAlpha()
+
+    /**
+     * @medium
+     */
+    public function testGetMaskPNGAlpha()
 	{
 		$img = WideImage::load(IMG_PATH . '100x100-blue-alpha.png');
 		
